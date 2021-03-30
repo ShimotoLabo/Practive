@@ -1,39 +1,39 @@
 <link rel="stylesheet" href="style.css" type="text/css" />
 
-<p id="status">opencv.js “Ç‚İ‚İ’†... ‚Ü‚¾‰Ÿ‚¹‚È‚¢«</p>
+<p id="status">opencv.js èª­ã¿è¾¼ã¿ä¸­... ã¾ã æŠ¼ã›ãªã„â†“</p>
 <input type="button" value="button" onclick="buttonClick()">
 
 <div><input type="file" id="selectedFile" name="file" /></div>
 
 <div><img id="inputImg" src="" /></div>
-<div class="caption">1. ƒIƒŠƒWƒiƒ‹‰æ‘œ</div>
+<div class="caption">1. ã‚ªãƒªã‚¸ãƒŠãƒ«ç”»åƒ</div>
 
 <canvas id="canvas01" height="0"></canvas>
-<div class="caption">2. ƒOƒŒƒCƒXƒP[ƒ‹‰»</div>
+<div class="caption">2. ã‚°ãƒ¬ã‚¤ã‚¹ã‚±ãƒ¼ãƒ«åŒ–</div>
 
 <canvas id="canvas02" height="0"></canvas>
-<div class="caption">3. “ñ’l‰»</div>
+<div class="caption">3. äºŒå€¤åŒ–</div>
 
 <canvas id="canvas03" height="0"></canvas>
-<div class="caption">4. ƒGƒbƒWŒŸo</div>
+<div class="caption">4. ã‚¨ãƒƒã‚¸æ¤œå‡º</div>
 
 
 <script>
     let inputImg = document.getElementById("inputImg");
     let selectedFile = document.getElementById("selectedFile");
 
-    // ŠÖ”1 opencv.js‚ª“Ç‚İ‚Ü‚ê‚½Œã‚ÉÀs‚³‚ê‚é
+    // é–¢æ•°1 opencv.jsãŒèª­ã¿è¾¼ã¾ã‚ŒãŸå¾Œã«å®Ÿè¡Œã•ã‚Œã‚‹
     function onOpenCvReady() {
-        document.getElementById("status").innerHTML = "opencv.js “Ç‚İ‚İI—¹ ‚à‚¤‰Ÿ‚¹‚é«";
+        document.getElementById("status").innerHTML = "opencv.js èª­ã¿è¾¼ã¿çµ‚äº† ã‚‚ã†æŠ¼ã›ã‚‹â†“";
         selectedFile.addEventListener("change", uploadImage, false);
     }
 
-    // ŠÖ”2@uƒtƒ@ƒCƒ‹‘I‘ğv ‘I‘ğ‚³‚ê‚½‰æ‘œ‚ğ“Ç‚İ‚Ş
+    // é–¢æ•°2ã€€ã€Œãƒ•ã‚¡ã‚¤ãƒ«é¸æŠã€ é¸æŠã•ã‚ŒãŸç”»åƒã‚’èª­ã¿è¾¼ã‚€
     async function uploadImage() {
         inputImg.src = URL.createObjectURL(selectedFile.files[0]);
     }
 
-    // ŠÖ”3@‰æ‘œ‚ğ“Ç‚İ‚ñ‚¾Œã‚ÉÀs‚³‚ê‚é
+    // é–¢æ•°3ã€€ç”»åƒã‚’èª­ã¿è¾¼ã‚“ã å¾Œã«å®Ÿè¡Œã•ã‚Œã‚‹
     inputImg.onload = function () {
         let src = cv.imread(inputImg);
         let out1 = new cv.Mat();
@@ -41,18 +41,18 @@
         let out3 = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
         let lines = new cv.Mat();
 
-        // ƒOƒŒƒCƒXƒP[ƒ‹‰»
+        // ã‚°ãƒ¬ã‚¤ã‚¹ã‚±ãƒ¼ãƒ«åŒ–
         cv.cvtColor(src, out1, cv.COLOR_RGBA2GRAY, 0);
         cv.imshow("canvas01", out1);
 
-        // “ñ’l‰»
+        // äºŒå€¤åŒ–
         cv.threshold(out1, out2, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU);
         cv.imshow("canvas02", out2);
 
-        // ƒGƒbƒWŒŸo
+        // ã‚¨ãƒƒã‚¸æ¤œå‡º
         cv.Canny(out1, out1, 150, 200);
         cv.HoughLinesP(out1, lines, Math.PI / 180, 2, 0, 0);
-        // HoughŒŸo‚µ‚½ü‚ğ•`‚­
+        // Houghæ¤œå‡ºã—ãŸç·šã‚’æã
         for (let i = 0; i < lines.rows; ++i) {
             let startPoint = new cv.Point(lines.data32S[i * 4], lines.data32S[i * 4 + 1]);
             let endPoint = new cv.Point(lines.data32S[i * 4 + 2], lines.data32S[i * 4 + 3]);
